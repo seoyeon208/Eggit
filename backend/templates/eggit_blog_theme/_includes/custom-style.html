@@ -1,0 +1,29 @@
+﻿{% if site.user_custom_theme %}
+<!-- [Eggit] User Custom Theme Overrides. Loaded at {{ site.time }}. MainBG: [{{ site.user_custom_theme.main_bg }}] -->
+<style>
+  html:not([data-mode]),
+  html[data-mode="light"] {
+    --main-bg: {{ site.user_custom_theme.main_bg | default: '#ffffff' }} !important;
+    --body-bg: {{ site.user_custom_theme.main_bg | default: '#ffffff' }} !important;
+    --sidebar-bg: {{ site.user_custom_theme.sidebar_bg | default: '#f6f8fa' }} !important;
+    --site-title-color: {{ site.user_custom_theme.sidebar_text | default: '#717171' }} !important;
+    --sidebar-active-color: {{ site.user_custom_theme.active_color | default: '#1d1d1d' }} !important;
+    --card-bg: {{ site.user_custom_theme.card_bg | default: '#ffffff' }} !important;
+
+    /* Derived Colors (Basic) */
+    --main-wrapper-bg: var(--main-bg) !important;
+    --topbar-wrapper-bg: var(--main-bg) !important;
+    --footer-bg: var(--main-bg) !important;
+    --search-wrapper-bg: var(--main-bg) !important;
+    --mask-bg: rgba(0,0,0,0.6) !important;
+    --main-border-color: rgba(0,0,0,0.1) !important;
+    
+    --sidebar-border-color: var(--sidebar-bg) !important;
+    --nav-cursor-color: var(--sidebar-active-color) !important;
+    --toc-highlight: var(--sidebar-active-color) !important;
+
+    /* Extra Overrides for Initial Load */
+    background-color: var(--main-bg) !important;
+  }
+</style>
+{% endif %}

@@ -1,0 +1,101 @@
+services:
+  # 1. MySQL (DB) - Internal Only + Localhost Access
+  db:
+    image: mysql:8.0
+    container_name: my-db-prod
+    # 로컬(EC2 내부)에서만 접속 가능하도록 127.0.0.1 바인딩 (VS Code 접속용)
+    ports:
+      - "127.0.0.1:3306:3306"
+    restart: always
+    env_file:
+      - .env.prod
+    volumes:
+      - db_data_prod:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. Redis - Internal Only
+  redis:
+    image: redis:alpine
+    container_name: my-redis-prod
+    restart: always
+
+  # 3. Backend (FastAPI)
+  backend:
+    build: ./backend
+    container_name: my-backend-prod
+    restart: always
+    # ▼▼▼ [병합 완료] 데이터 삭제(Drop)는 빼고, 부족한 데이터 채우기(Seed)만 추가함 ▼▼▼
+    command: >
+      sh -c " echo '⏳ Waiting for DB...' && python -c \"import time; time.sleep(5)\" &&
+
+      echo '🚀 Running Migrations...' && alembic upgrade head &&
+
+      echo '👾 Seeding Avatar Data (If missing)...' && python AI_generated_seed_avatar_metas.py &&
+
+      echo '📜 Seeding Quest Data (If missing)...' && python init_db_force.py &&
+
+      echo '✅ Starting Server...' && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    env_file:
+      - .env.prod
+    volumes:
+      - ./backend:/app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  # 4. Celery Worker
+  celery_worker:
+    build: ./backend
+    container_name: my-celery-prod
+    restart: always
+    command: celery -A app.worker.celery_app worker --loglevel=info
+    env_file:
+      - .env.prod
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - backend
+      - redis
+
+  # 5. Frontend Build (Static Asset Generation)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+      # ▼▼▼ HTTPS 주소 하드코딩 (Mixed Content 방지) ▼▼▼
+      args:
+        - VITE_API_URL=https://eggit.example.com/api/v1
+        - VITE_REDIRECT_URI=https://eggit.example.com/auth/callback
+        - VITE_GITHUB_CLIENT_ID=Ov23lisGN4XypRG73QOl
+    container_name: my-frontend-build-prod
+    volumes:
+      - frontend_dist:/dist
+
+  # 6. Nginx Reverse Proxy & Static File Server
+  nginx:
+    image: nginx:alpine
+    container_name: my-nginx-prod
+    restart: always
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - frontend_dist:/usr/share/nginx/html:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      # 빌드가 완료된 후 Nginx가 켜지도록 조건 추가 (권장)
+      frontend:
+        condition: service_completed_successfully
+      backend:
+        condition: service_started
+
+volumes:
+  db_data_prod:
+  frontend_dist:

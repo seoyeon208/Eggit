@@ -1,0 +1,24 @@
+# 1. Build Stage
+FROM node:20-alpine AS build-stage
+WORKDIR /app
+
+# Vite variables for build-time injection
+ARG VITE_API_URL
+ARG VITE_REDIRECT_URI
+ARG VITE_GITHUB_CLIENT_ID
+
+ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_REDIRECT_URI=$VITE_REDIRECT_URI
+ENV VITE_GITHUB_CLIENT_ID=$VITE_GITHUB_CLIENT_ID
+
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+# 2. Copy Stage
+# This stage copies the build output to a shared volume at runtime
+FROM alpine:latest
+WORKDIR /app
+COPY --from=build-stage /app/dist /app/dist_backup
+CMD ["sh", "-c", "cp -r /app/dist_backup/. /dist/"]

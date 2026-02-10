@@ -1,0 +1,795 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'RoundedFixedsys';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff') format('woff');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Umdot';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-4@1.1/Umdot12.woff2') format('woff2');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mulmaru';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-4@1.1/Mulmaru.woff2') format('woff2');
+  font-weight: normal;
+  font-display: swap;
+}
+
+:root {
+  font-family: 'Umdot', 'Mulmaru', 'Noto Sans KR', system-ui, sans-serif;
+}
+
+/* 1. Set the foundation on the root elements */
+html,
+body {
+  font-family: 'Umdot', 'Mulmaru', 'Noto Sans KR', system-ui, sans-serif;
+}
+
+/* 2. Force form elements and headers to inherit the font-family */
+button,
+input,
+textarea,
+select,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: inherit;
+}
+
+/* 3. Use universal inheritance to catch all other tags (div, span, etc.) */
+/* IMPORTANT: We do NOT use !important here so that inline styles in 
+   DeveloperTest.jsx can still override this naturally. */
+* {
+  font-family: inherit;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-image: url('./assets/images/stripe_bg.png');
+  background-repeat: repeat;
+  background-color: #f0f4ff;
+  transition: background-image 0.5s ease;
+}
+
+/* 🏠 친구 홈 테마 */
+body.friends-home {
+  background-image: url('./assets/images/friends_bg.png');
+  background-color: #fff9f0;
+  /* 따뜻한 느낌의 폴백 컬러 */
+}
+
+
+/* --- Basic Animations --- */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes tutorial-float {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(-0.5deg);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(1deg);
+  }
+}
+
+.animate-tutorial-float {
+  animation: tutorial-float 2.8s ease-in-out infinite;
+}
+
+/* Typewriter Cursor animation */
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background-color: currentColor;
+  margin-left: 2px;
+  vertical-align: middle;
+  animation: blink 0.8s step-end infinite;
+}
+
+/* 커스텀 애니메이션 (기존 사용분 유지) */
+@keyframes bounce-slow {
+
+  0%,
+  100% {
+    transform: translateY(-5%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 3s infinite;
+}
+
+@keyframes bounce-x {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(10px);
+  }
+}
+
+.animate-bounce-x {
+  animation: bounce-x 1s infinite;
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px) rotate(-1.5deg);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px) rotate(1.5deg);
+  }
+}
+
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes evolution-shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-15px) rotate(-3deg);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(15px) rotate(3deg);
+  }
+}
+
+.animate-evolution-shake {
+  animation: evolution-shake 0.4s ease-in-out infinite;
+  /* 진화 중에는 계속 흔들리도록 무한 반복 */
+}
+
+
+/* --- Transition/UI Animations --- */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+@keyframes scale-in {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.scale-in {
+  animation: scale-in 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Particle animation for EXP rewards */
+@keyframes particle-fly {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.3) rotate(0deg);
+  }
+
+  15% {
+    opacity: 1;
+    /* 빠르게 불투명해짐 */
+  }
+
+  30% {
+    transform: translate(0, -30px) rotate(45deg) scale(1.2);
+  }
+
+  90% {
+    opacity: 1;
+    /* 거의 끝까지 선명하게 유지 */
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) scale(0.4) rotate(360deg);
+  }
+}
+
+@keyframes particle-twinkle {
+
+  0%,
+  100% {
+    transform: scale(1);
+    filter: brightness(1) blur(0px);
+  }
+
+  50% {
+    transform: scale(1.3);
+    filter: brightness(2) blur(1px);
+  }
+}
+
+.particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: particle-fly 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+  /* 파티클 밑에 검은 그림자 효과 - 범위 크게 */
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.5));
+}
+
+.particle-inner {
+  display: block;
+  font-size: 18px;
+  color: #FFFFFF;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 1));
+  text-shadow: 0 0 15px #FFFFFF, 0 0 8px #FFFFFF;
+  animation: particle-twinkle 0.4s ease-in-out infinite;
+}
+
+
+/* Basic EXP Bar Color (Normal) */
+.exp-bar-base {
+  background: linear-gradient(90deg, #60a5fa, #3b82f6);
+  transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes exp-charging {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* EXP Bar Charging State (Gold Effect - applied via class) */
+.exp-charging-state {
+  background: linear-gradient(90deg,
+      #fbbf24,
+      /* yellow-400 */
+      #ffffff,
+      /* white highlight */
+      #fbbf24) !important;
+  background-size: 200% 100% !important;
+  animation: exp-charging 1s linear infinite !important;
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
+}
+
+/* Level Up Screen Overlay */
+.level-up-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  z-index: 20000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+.level-up-content {
+  text-align: center;
+  font-family: 'RoundedFixedsys', sans-serif !important;
+  animation: pop-up 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes pop-up {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes star-burst {
+  0% {
+    transform: translate(-50%, -50%) scale(0) rotate(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(var(--dx), var(--dy)) scale(2) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+.level-up-star {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  background: #fbbf24;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  animation: star-burst 1s ease-out forwards;
+}
+
+
+
+
+@keyframes intense-shake {
+
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translate(-10px, -10px) rotate(-10deg);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translate(10px, 10px) rotate(10deg);
+  }
+}
+
+.animate-intense-shake {
+  animation: intense-shake 0.15s ease-in-out infinite;
+}
+
+@keyframes evolution-intense-shake {
+
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translate(-15px, -15px) rotate(-12deg);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translate(15px, 15px) rotate(12deg);
+  }
+}
+
+.animate-evolution-intense-shake {
+  animation: evolution-intense-shake 0.15s ease-in-out infinite;
+}
+
+@keyframes flash {
+  0% {
+    background-color: rgba(255, 255, 255, 0);
+  }
+
+  50% {
+    background-color: rgba(255, 255, 255, 1);
+  }
+
+  100% {
+    background-color: rgba(255, 255, 255, 0);
+  }
+}
+
+.animate-flash {
+  animation: flash 0.5s ease-out forwards;
+}
+
+@keyframes sparkle {
+
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.5) rotate(0deg);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.5) rotate(180deg);
+  }
+}
+
+.animate-sparkle {
+  animation: sparkle 1s ease-in-out infinite;
+}
+
+.animate-sparkle-once {
+  animation: sparkle 1s ease-in-out forwards;
+}
+
+@keyframes result-pop {
+  0% {
+    transform: scale(0.5) translateY(100px);
+    opacity: 0;
+  }
+
+  70% {
+    transform: scale(1.05) translateY(-10px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-result-pop {
+  animation: result-pop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Tile-based border styling (Adjusted for 320x320) */
+.panel-border {
+  border-style: solid;
+  border-width: 32px;
+  border-image-source: url('./assets/images/Tile.png');
+  border-image-slice: 80 fill;
+  border-image-width: 32px;
+  border-image-repeat: round;
+  box-shadow: none;
+  background-clip: padding-box;
+  background-color: transparent !important;
+  transition: border-image-source 0.5s ease;
+}
+
+/* 친구 홈 방문 시 패널 타일 변경 */
+body.friends-home .panel-border {
+  border-image-source: url('./assets/images/friends_Tile.png');
+}
+
+
+.panel-border-alt {
+  border-style: solid;
+  border-width: 120px 48px 48px 48px;
+  border-image-source: url('./assets/images/Tile2.png');
+  border-image-slice: 120 48 48 48 fill;
+  border-image-width: 120px 48px 48px 48px;
+  border-image-repeat: repeat;
+  background-clip: padding-box;
+  background-color: #EBF2FF !important;
+}
+
+.panel-border-guestbook {
+  border-style: solid;
+  border-width: 20px;
+  border-image-source: url('./assets/images/Tile3.png');
+  border-image-slice: 33.33% fill;
+  border-image-width: 20px;
+  border-image-repeat: repeat;
+  background-clip: padding-box;
+  background-color: white !important;
+}
+
+
+
+/* Internal spacing for tiled panels - avoiding cutoff */
+.panel-content-tight {
+  margin: 0;
+  padding: 0;
+}
+
+
+
+
+/* Slide down animation for notifications */
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.3s ease-out;
+}
+
+/* Slide up animation */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+@keyframes slide-up-fade {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-slide-up-fade {
+  animation: slide-up-fade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* --- Loading & Rewards Effects --- */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2.5s infinite linear;
+}
+
+/* Loading bar animation */
+@keyframes loading-bar {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(400%);
+  }
+}
+
+.animate-loading-bar {
+  animation: loading-bar 1.5s ease-in-out infinite;
+}
+
+/* --- Helpers --- */
+/* --- Custom Scrollbar (Modern/Mobile Style) --- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(160, 174, 192, 0.5);
+  /* #A0AEC0 with opacity */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(113, 128, 150, 0.7);
+  /* #718096 with opacity */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Outside mode effect */
+@keyframes sunlight-beam {
+
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: skewX(-20deg) translateX(0);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: skewX(-20deg) translateX(10px);
+  }
+}
+
+.outside-light-beam {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 3;
+  animation: sunlight-beam 8s ease-in-out infinite;
+}
+
+.outside-avatar-shadow {
+  filter: drop-shadow(20px 20px 30px rgba(0, 0, 0, 0.4)) !important;
+}
+
+/* Responsive Speech Bubble */
+/* border-image가 꼬리(tail)를 포함한 이미지를 완벽하게 처리하기 어렵기 때문에
+   꼬리 중복 및 왜곡을 방지하기 위해 background-image 100% 방식을 사용합니다. */
+.speech-bubble-tiled {
+  background-image: url('./assets/images/speech_bubble.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-width: 240px;
+  min-height: 120px;
+  max-width: 320px;
+  position: relative;
+  z-index: 50;
+  /* 꼬리 공간과 둥근 모서리를 고려한 넉넉한 패딩 */
+  padding: 20px 30px 40px 30px;
+  filter: drop-shadow(0 6px 15px rgba(0, 0, 0, 0.15));
+}
+
+/* Background Edge Feathering - Subtle */
+.background-feather {
+  mask-image: radial-gradient(circle at center, black 65%, transparent 100%);
+  -webkit-mask-image: radial-gradient(circle at center, black 65%, transparent 100%);
+}
+
+/* 3D Flip Container */
+.flip-container {
+  perspective: 1000px;
+  width: 100%;
+  height: 100%;
+}
+
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+/* isFlipped 클래스가 붙으면 회전 */
+.flip-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-front,
+.flip-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  /* 뒷면 숨김 */
+  display: flex;
+  flex-direction: column;
+}
+
+/* 뒷면은 이미 뒤집혀 있어야 함 */
+.flip-back {
+  transform: rotateY(180deg);
+}

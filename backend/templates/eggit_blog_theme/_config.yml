@@ -1,0 +1,199 @@
+# The Site Configuration
+
+# Import the theme
+theme: jekyll-theme-chirpy
+
+# The language of the webpage › http://www.lingoes.net/en/translator/langcode.htm
+lang: en
+
+# Change to your timezone › https://zones.arilyn.cc
+timezone: Asia/Seoul
+
+# jekyll-seo-tag settings
+# ↓ --------------------------
+
+title: __BLOG_TITLE__       # Pydantic: blog_title
+
+tagline: __BLOG_TAGLINE__   # Pydantic: blog_tagline
+
+description: >-             # Pydantic: description SEO
+  __BLOG_DESCRIPTION__
+
+url: "https://__GITHUB_USERNAME__.github.io" # Pydantic: github_username
+
+github:
+  username: __GITHUB_USERNAME__ # Pydantic: github_username
+
+
+social:
+  name: __AUTHOR_NAME__     # Pydantic: author_name
+  email: __AUTHOR_EMAIL__   # Pydantic: author_email
+  links:
+    - https://github.com/__GITHUB_USERNAME__
+
+# Site Verification Settings
+webmaster_verifications:
+  google:
+  bing:
+  alexa:
+  yandex:
+  baidu:
+  facebook:
+
+# ↑ --------------------------
+
+# Web Analytics Settings
+analytics:
+  google:
+    id:
+  goatcounter:
+    id:
+  umami:
+    id:
+    domain:
+  matomo:
+    id:
+    domain:
+  cloudflare:
+    id:
+  fathom:
+    id:
+
+# Page views settings
+pageviews:
+  provider:
+
+# Prefer color scheme setting.
+# [수정] 다크모드 토글을 살리기 위해 비워둡니다.
+theme_mode:
+
+# The CDN endpoint for media resources.
+# cdn: ""
+
+# [수정] 아바타 캐시 버스팅 (?v=1 추가)
+avatar: "/assets/img/avatar.png?v=1"
+
+# The URL of the site-wide social preview image used in SEO `og:image` meta tag.
+social_preview_image:
+
+# boolean type, the global switch for TOC in posts.
+toc: true
+
+comments:
+  provider:
+  disqus:
+    shortname:
+  utterances:
+    repo:
+    issue_term:
+  giscus:
+    repo:
+    repo_id:
+    category:
+    category_id:
+    mapping:
+    strict:
+    input_position:
+    lang:
+    reactions_enabled:
+
+# Self-hosted static assets
+assets:
+  self_host:
+    enabled:
+    env:
+
+# [수정] PWA 비활성화 (캐시 문제 해결을 위해 false로 변경)
+pwa:
+  enabled: false
+  cache:
+    enabled: false
+    deny_paths:
+
+paginate: 10
+
+# The base URL of your site
+baseurl: ""
+
+# ------------ The following options are not recommended to be modified ------------------
+
+kramdown:
+  footnote_backlink: "&#8617;&#xfe0e;"
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: highlight
+    span:
+      line_numbers: false
+    block:
+      line_numbers: true
+      start_line: 1
+
+collections:
+  tabs:
+    output: true
+    sort_by: order
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      comments: true
+      toc: true
+      permalink: /posts/:title/
+  - scope:
+      path: _drafts
+    values:
+      comments: false
+  - scope:
+      path: ""
+      type: tabs
+    values:
+      layout: page
+      permalink: /:title/
+
+sass:
+  style: compressed
+
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  profile: false
+  blanklines: false
+  ignore:
+    envs: [development]
+
+exclude:
+  - "*.gem"
+  - "*.gemspec"
+  - docs
+  - tools
+  - README.md
+  - LICENSE
+  - purgecss.js
+  - "*.config.js"
+  - "package*.json"
+
+jekyll-archives:
+  enabled: [categories, tags]
+  layouts:
+    category: category
+    tag: tag
+  permalinks:
+    tag: /tags/:name/
+    category: /categories/:name/
+
+# -----------------------------------------------------------------------------
+# [사용자 커스텀 테마 설정]
+# -----------------------------------------------------------------------------
+user_custom_theme:
+  font_import_url: "https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap"
+  font_family_base: "'Nanum Gothic', sans-serif"
+
+  main_bg:      "#F0F8FF"
+  sidebar_bg:   "#D9EBF7"
+  sidebar_text: "#FFFFFF"
+  active_color: "#287281"
+  card_bg:      "#FFFFFF"

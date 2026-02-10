@@ -1,0 +1,91 @@
+---
+---
+
+@use 'sass:color';
+@use 'main{% if jekyll.environment == 'production' %}.bundle{% endif %}';
+@use 'themes/light';
+@use 'themes/dark';
+
+/* [Eggit] User Configuration Variables */
+$main-bg:       {{ site.user_custom_theme.main_bg | default: '#ffffff' }};
+$sidebar-bg:    {{ site.user_custom_theme.sidebar_bg | default: '#f6f8fa' }};
+$sidebar-text:  {{ site.user_custom_theme.sidebar_text | default: '#b9b9b9' }};
+$active-color:  {{ site.user_custom_theme.active_color | default: '#000000' }};
+$card-bg:       {{ site.user_custom_theme.card_bg | default: '#ffffff' }};
+$font-url:      '{{ site.user_custom_theme.font_import_url }}';
+$font-family:   '{{ site.user_custom_theme.font_family_base | default: "sans-serif" }}';
+
+/* [Eggit] Custom Light Theme Mixin (Inherit & Override) */
+@mixin custom-light {
+  /* 1. Reset to Chirpy Base Light Theme */
+  @include light.styles;
+
+  /* 2. Override with User Colors */
+  --main-bg: #{$main-bg} !important;
+  --body-bg: #{$main-bg} !important;
+  --main-wrapper-bg: #{$main-bg} !important;
+  --topbar-wrapper-bg: #{$main-bg} !important;
+  --search-wrapper-bg: #{$main-bg} !important;
+  --topbar-bg: #{$main-bg} !important;
+  --footer-bg: #{$main-bg} !important;
+
+  --sidebar-bg: #{$sidebar-bg} !important;
+  --sidebar-border-color: #{$sidebar-bg} !important;
+  
+  --site-title-color: #{$sidebar-text} !important;
+  --label-color: #{$sidebar-text} !important;
+  
+  --sidebar-active-color: #{$active-color} !important;
+  --nav-cursor-color: #{$active-color} !important;
+  --toc-highlight: #{$active-color} !important;
+  --checkbox-checked-color: #{$active-color} !important;
+
+  --card-bg: #{$card-bg} !important;
+
+  /* 3. Derived Colors (Clean Calculation) */
+  --mask-bg: #{color.mix(black, $main-bg, 60%)} !important;
+  --main-border-color: #{color.mix(black, $main-bg, 5%)} !important;
+  --sidebar-hover-bg: #{color.mix(black, $sidebar-bg, 10%)} !important;
+  --sidebar-muted-color: #{color.change($sidebar-text, $alpha: 0.6)} !important;
+  --site-subtitle-color: #{color.change($sidebar-text, $alpha: 0.7)} !important;
+  
+  --sidebar-btn-bg: #{color.mix(black, $sidebar-bg, 5%)} !important;
+  --sidebar-btn-color: #{color.change($sidebar-text, $alpha: 0.8)} !important;
+  --btn-share-color: #{color.change($sidebar-text, $alpha: 0.5)} !important;
+  --btn-share-hover-color: #{$active-color} !important;
+  
+  --card-hover-bg: #{color.mix(black, $card-bg, 3%)} !important;
+
+  /* Specific Layout Overrides */
+  #main-wrapper { background-color: var(--body-bg) !important; }
+  #sidebar { background-color: var(--sidebar-bg) !important; }
+  
+  #topbar-wrapper { 
+    background-color: var(--topbar-bg) !important;
+    backdrop-filter: none !important;
+  }
+  
+  #sidebar .nav-list .nav-item.active .nav-link,
+  #sidebar .nav-list .nav-item.active .nav-link i {
+    color: var(--sidebar-active-color) !important;
+  }
+}
+
+/* Apply Custom Theme */
+html:not([data-mode]),
+html[data-mode="light"] {
+  @include custom-light;
+}
+
+html[data-mode="dark"] {
+  @include dark.styles;
+}
+
+/* Font Import */
+{% if site.user_custom_theme.font_import_url %}
+  @import url('#{$font-url}');
+  :root {
+    --font-family-sans: #{$font-family};
+    --font-family-heading: var(--font-family-sans);
+  }
+{% endif %}

@@ -1,0 +1,119 @@
+# --------------------------------------------------------------------
+# 1. Python & Runtime Essentials
+# --------------------------------------------------------------------
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# --------------------------------------------------------------------
+# 2. Virtual Environments (가상 환경)
+# --------------------------------------------------------------------
+venv/
+env/
+.venv/
+.env/
+venv.bak/
+env.bak/
+
+# --------------------------------------------------------------------
+# 3. Environment Variables & Security (가장 중요)
+# --------------------------------------------------------------------
+# 실제 비밀키(DB 비밀번호, API 키 등)가 들어있는 파일은 절대 커밋 금지
+.env
+.env.prod
+.env.local
+.env.*.local
+*.pem
+
+# 단, .env.example 같은 템플릿 파일은 커밋하는 것이 좋습니다.
+# !.env.example
+
+# --------------------------------------------------------------------
+# 4. Celery & Redis Specific
+# --------------------------------------------------------------------
+# Celery 비트(Beat) 스케줄 데이터 (로컬 실행 시 생성됨)
+celerybeat-schedule
+celerybeat-schedule.db
+celerybeat-schedule.bak
+celerybeat-schedule.dat
+celerybeat-schedule.dir
+
+# PID files (Celery 워커 프로세스 ID)
+celerybeat.pid
+worker.pid
+
+# Redis dump file (로컬에서 Redis를 직접 띄워 테스트할 경우 생성될 수 있음)
+dump.rdb
+
+# --------------------------------------------------------------------
+# 5. Logs & Debugging
+# --------------------------------------------------------------------
+*.log
+logs/
+*.log.*
+.gemini/
+# Testing & Coverage
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+htmlcov/
+
+# --------------------------------------------------------------------
+# 6. IDE & OS Settings
+# --------------------------------------------------------------------
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# JetBrains (PyCharm)
+.idea/
+
+# --------------------------------------------------------------------
+# 7. Frontend (Node.js / React)
+# --------------------------------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+dist/
+build/
+.eslintcache
+
+# --------------------------------------------------------------------
+# 8. Docker (Optional)
+# --------------------------------------------------------------------
+# 로컬 오버라이드 설정은 개인별로 다를 수 있으므로 제외
+docker-compose.override.yml

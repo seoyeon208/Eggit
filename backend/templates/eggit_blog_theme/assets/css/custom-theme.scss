@@ -1,0 +1,136 @@
+﻿---
+---
+
+/* [1] Sass 모듈 및 Chirpy 오리지널 테마 로드 (이게 있어야 원본 다크모드가 존재함) */
+@use 'sass:color';
+@use 'main{% if jekyll.environment == 'production' %}.bundle{% endif %}';
+
+/* [2] 사용자 설정값 로드 (_config.yml) */
+$u-main-bg:      {{ site.user_custom_theme.main_bg | default: '#a9cff0' }};
+$u-sidebar-bg:   {{ site.user_custom_theme.sidebar_bg | default: '#5499de' }};
+$u-sidebar-text: {{ site.user_custom_theme.sidebar_text | default: '#b9b9b9' }};
+$u-active:       {{ site.user_custom_theme.active_color | default: '#000000' }};
+$u-card-bg:      {{ site.user_custom_theme.card_bg | default: '#ffffff' }};
+
+/* ==========================================================================
+   [PART A] 라이트 모드 (Light Mode) 
+   - 'html[data-mode="light"]'일 때만! 이 스타일이 적용됩니다.
+   - !important를 사용하여 원본 라이트 테마를 확실하게 덮어씁니다.
+   ==========================================================================
+*/
+html[data-mode="light"] {
+
+  /* -----------------------------------------------------------------
+     [Group 1] 메인 배경 및 톱바/풋터
+     ----------------------------------------------------------------- */
+  --main-bg: #{$u-main-bg} !important;
+  --body-bg: #{$u-main-bg} !important;
+  --main-wrapper-bg: #{$u-main-bg} !important;
+  --topbar-wrapper-bg: #{$u-main-bg} !important;
+  --search-wrapper-bg: #{$u-main-bg} !important;
+  --footer-bg: #{$u-main-bg} !important;
+  
+  --mask-bg: #{color.mix(#000000, $u-main-bg, 60%)} !important;
+  --main-border-color: #{color.mix(#000000, $u-main-bg, 5%)} !important;
+
+  /* -----------------------------------------------------------------
+     [Group 2] 사이드바 (Sidebar)
+     ----------------------------------------------------------------- */
+  --sidebar-bg: #{$u-sidebar-bg} !important;
+  --sidebar-border-color: #{$u-sidebar-bg} !important;
+  --sidebar-hover-bg: #{color.mix(#000000, $u-sidebar-bg, 10%)} !important;
+
+  /* 텍스트 */
+  --site-title-color: #{$u-sidebar-text} !important;
+  --site-subtitle-color: #{color.change($u-sidebar-text, $alpha: 0.7)} !important;
+  --label-color: #{$u-sidebar-text} !important;
+  --sidebar-muted-color: #{color.change($u-sidebar-text, $alpha: 0.6)} !important;
+  
+  /* 활성 메뉴 색상 */
+  --sidebar-active-color: #{$u-active} !important;
+  --nav-cursor-color: #{$u-active} !important;
+  
+  /* 버튼 등 */
+  --sidebar-btn-bg: #{color.mix(#000000, $u-sidebar-bg, 5%)} !important;
+  --sidebar-btn-color: #{color.change($u-sidebar-text, $alpha: 0.8)} !important;
+  --btn-share-color: #{color.change($u-sidebar-text, $alpha: 0.5)} !important;
+  --btn-share-hover-color: #{$u-active} !important;
+
+  /* -----------------------------------------------------------------
+     [Group 3] 포인트 컬러 (링크, 체크박스 등)
+     ----------------------------------------------------------------- */
+  --toc-highlight: #{$u-active} !important;
+  --checkbox-checked-color: #{$u-active} !important;
+
+  /* -----------------------------------------------------------------
+     [Group 4] 카드 (Card)
+     ----------------------------------------------------------------- */
+  --card-bg: #{$u-card-bg} !important;
+  --card-hover-bg: #{color.mix(#000000, $u-card-bg, 3%)} !important;
+  --card-shadow: #{color.change(#000000, $alpha: 0.05)} 0 2px 6px 0 !important;
+
+  /* -----------------------------------------------------------------
+     [Override] 컴포넌트별 강제 스타일링
+     ----------------------------------------------------------------- */
+  
+  /* 메인 래퍼 */
+  #main-wrapper {
+    background-color: var(--body-bg) !important;
+  }
+
+  /* 사이드바 */
+  #sidebar {
+    background-color: var(--sidebar-bg) !important;
+  }
+  
+  #sidebar .nav-list .nav-item.active .nav-link {
+    color: var(--sidebar-active-color) !important;
+  }
+  
+  #sidebar .nav-list .nav-item.active .nav-link i {
+    color: var(--sidebar-active-color) !important;
+  }
+
+  /* 카드 */
+  .card {
+    background-color: var(--card-bg) !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* 톱바 */
+  #topbar-wrapper {
+    background-color: var(--topbar-wrapper-bg) !important;
+    backdrop-filter: none !important; /* 배경색 왜곡 방지 */
+  }
+
+  /* 풋터 */
+  footer {
+    background-color: var(--footer-bg) !important;
+    border-top: 1px solid var(--main-border-color) !important;
+    p, a { color: var(--text-muted-color) !important; }
+  }
+}
+
+
+/* ==========================================================================
+   [PART B] 다크 모드 (Dark Mode) 
+   - 아래 블록을 비워두면, 맨 위에서 로드한 @use 'main'의 다크 테마가 그대로 적용됩니다.
+   - 라이트 모드 설정이 이곳에 간섭하지 않도록 선택자를 분리했습니다.
+   ==========================================================================
+*/
+html[data-mode="dark"] {
+  /* 아무것도 적지 마세요. 
+     Jekyll Chirpy의 원본 Dark Theme가 자동으로 적용됩니다.
+  */
+}
+
+
+/* [4] 웹폰트 로드 */
+{% if site.user_custom_theme.font_import_url %}
+  @import url('{{ site.user_custom_theme.font_import_url }}');
+  :root {
+    --font-family-sans: {{ site.user_custom_theme.font_family_base | default: "sans-serif" }};
+    --font-family-heading: var(--font-family-sans);
+  }
+{% endif %}

@@ -1,0 +1,22 @@
+title: __DOCS_TITLE__
+description: __DOCS_DESCRIPTION__
+
+
+remote_theme: just-the-docs/just-the-docs
+plugins:
+  - jekyll-remote-theme
+
+
+# GitHub Pages 필수 설정
+url: "https://__GITHUB_USERNAME__.github.io"
+baseurl: "/__REPO_NAME__"
+
+aux_links:
+  Template Repository: https://github.com/__GITHUB_USERNAME__/__REPO_NAME__
+
+color_scheme: eggit_custom
+
+
+mermaid:
+  # Version of mermaid library
+  version: "9.1.3"

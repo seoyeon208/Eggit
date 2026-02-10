@@ -1,0 +1,32 @@
+// [Eggit] Custom Color Scheme
+// Generated dynamically based on user settings
+
+// 1. Font Settings
+__FONT_IMPORT__
+__FONT_FAMILY_VAR__
+
+// 2. Scheme Name
+$color-scheme: eggit_custom;
+
+// 3. User Customized Colors
+$body-background-color: __MAIN_BG__;       // 메인 컨텐츠 배경
+$sidebar-color: __SIDEBAR_BG__;            // 사이드바 배경
+$search-background-color: __MAIN_BG__;     // 검색창 배경 (메인과 통일)
+
+// 4. Accent Colors (Links, Buttons)
+$link-color: __ACCENT_COLOR__;             
+$btn-primary-color: __ACCENT_COLOR__;      
+
+// 5. Default Colors (Fixed for Readability)
+$body-heading-color: #2b2b2b;            
+$body-text-color: #3b454e;               
+$nav-child-link-color: #5c5962;          
+$search-result-preview-color: #727272;   
+
+// 6. Derived Colors (Automatic Calculation via SCSS)
+$feedback-color: darken(__SIDEBAR_BG__, 3%); 
+$code-background-color: __MAIN_BG__;
+$table-background-color: __MAIN_BG__;
+
+// 7. External Imports (Must be last)
+@import "./vendor/accessible-pygments/github-light";

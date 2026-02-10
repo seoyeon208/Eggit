@@ -1,0 +1,95 @@
+services:
+  # 1. MySQL (DB)
+  db:
+    image: mysql:8.0
+    container_name: my-db
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    # ▼▼▼ [추가] DB가 진짜 준비되었는지 확인하는 헬스체크 ▼▼▼
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. Redis
+  redis:
+    image: redis:alpine
+    container_name: my-redis
+    ports:
+      - "6379:6379"
+
+# 3. Backend (FastAPI)
+  backend:
+    build: ./backend
+    container_name: my-backend
+    # ▼▼▼ [핵심 수정] 시작할 때 DB를 무조건 초기화하는 코드 추가 ▼▼▼
+    command: >
+      sh -c "
+      echo 'Waiting for DB...' &&
+      python -c \"import time; time.sleep(5)\" &&
+      
+      echo '🔥 FORCE DROPPING ALL TABLES...' &&
+      python -c 'import os; from sqlalchemy import create_engine, MetaData; engine = create_engine(os.environ.get("DATABASE_URL")); meta = MetaData(); meta.reflect(bind=engine); meta.drop_all(bind=engine)' &&
+      
+      echo '🚀 Running Migrations...' &&
+      alembic upgrade head &&
+      
+      echo '🌱 Seeding Data...' &&
+      python AI_generated_seed_avatar_metas.py &&
+      
+      echo '⚙️ Init DB...' &&
+      python init_db_force.py &&
+      
+      echo '✅ Starting Server...' &&
+      uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+      
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    # ▼▼▼ [수정] 무한 재시작 방지 (에러 로그 확인용) ▼▼▼
+    restart: "no"
+
+  # 4. Celery Worker
+  celery_worker:
+    build: ./backend
+    container_name: my-celery
+    command: celery -A app.worker.celery_app worker --loglevel=info
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - backend
+      - redis
+
+  # 5. Frontend
+  frontend:
+    build: ./frontend
+    container_name: my-frontend
+    command: npm run dev -- --host
+    env_file:
+      - .env
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
+
+volumes:
+  db_data:
